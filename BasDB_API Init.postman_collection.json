@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "52cc633c-d65f-4f32-b7ba-7d6ad8256778",
+		"name": "BasDB_API Init",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Department Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer PwiuDvGGGU5qbeQGEIh3aN21c393RK",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Computer Science\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/departments/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"departments",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create main_section",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"name\": \"CO123\",\r\n  \"department\": \"1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/main_sections/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"main_sections",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create section",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"main_section\": \"CO123\",\r\n  \"name\": \"CO2\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/sections/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"sections",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create student",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"user\": {\r\n    \"username\": 11620005,\r\n    \"password\": \"JgB\",\r\n    \"first_name\": \"Sonvert\",\r\n    \"last_name\": \"Bhardwaj\"\r\n  },\r\n  \"section\": \"CO2\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/students/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"students",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Subject",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"OS-Lab\",\r\n  \"section\": \"CO2\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/subjects/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"subjects",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Teacher",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user\": {\r\n    \"username\": \"pushplata\",\r\n    \"password\": \"deepsun\",\r\n    \"first_name\": \"Pushp Lata\",\r\n    \"last_name\": \"Bhardwaj\"\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/teachers/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"teachers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create TimetablePeriod",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subject\": 1,\r\n  \"teacher\": 1,\r\n  \"day\": \"1\",\r\n  \"time\": \"08:30:00\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/timetable_periods/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"timetable_periods",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAuthToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/o/token/?grant_type=password&username=11620005&password=JgB&client_id=pKk0KNTMMuixN9hwL2Gc8lBV5NxTAz0ftvbIUMT7&client_secret=kocLnGSy4PBAIaVxyK35CMPBnBYUXy41a5T2KLbCmuCmj7PVqMhSYQcllKh86SIOxuOqNTw8AbSCqAwdbFluRBqQOy5eSG8ssRehfqO1hWFL2CQ8gh9MXP6iOzdI6P60",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"o",
+						"token",
+						""
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"key": "username",
+							"value": "11620005"
+						},
+						{
+							"key": "password",
+							"value": "JgB"
+						},
+						{
+							"key": "client_id",
+							"value": "pKk0KNTMMuixN9hwL2Gc8lBV5NxTAz0ftvbIUMT7"
+						},
+						{
+							"key": "client_secret",
+							"value": "kocLnGSy4PBAIaVxyK35CMPBnBYUXy41a5T2KLbCmuCmj7PVqMhSYQcllKh86SIOxuOqNTw8AbSCqAwdbFluRBqQOy5eSG8ssRehfqO1hWFL2CQ8gh9MXP6iOzdI6P60"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "ZnvpBdKx0UKAQZlcmruWfF5bWZ0Uhh",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "4db1e9d3-61f2-4507-a271-57b701b4c0c4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "79cf8dc0-517b-4269-a7ba-3dff62300558",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
