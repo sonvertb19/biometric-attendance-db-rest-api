@@ -6,6 +6,7 @@ class Subject(models.Model):
     section = models.ForeignKey('users.Section', on_delete=models.CASCADE, null=False)
 
     class Meta:
+        # unique_together = ['title']
         unique_together = ['section', 'title']
 
 
@@ -23,9 +24,11 @@ class TimetablePeriod(models.Model):
     teacher = models.ForeignKey('users.Teacher', on_delete=models.CASCADE)
     day = models.CharField(max_length=1, choices=DAY_CHOICES, null=False)
     time = models.TimeField(null=False)
+    section = models.ForeignKey('users.Section', on_delete=models.CASCADE, null=False)
 
     class Meta:
-        unique_together = ['day', 'time']
+        # unique_together = ['day', 'time']
+        unique_together = ['day', 'time', 'section']
 
 
 # class Attendance(models.Model):
