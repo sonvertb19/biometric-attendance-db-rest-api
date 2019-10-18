@@ -71,7 +71,7 @@ class SectionListCreateView(generics.ListCreateAPIView):
 
 
 class SectionDetailView(generics.RetrieveAPIView):
-    queryset = MainSection.objects.all()
+    queryset = Section.objects.all()
     permissions = [IsAdminUser]
     serializer_class = serializers.SectionSerializer
 
