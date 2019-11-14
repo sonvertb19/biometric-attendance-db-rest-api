@@ -31,13 +31,14 @@ class TimetablePeriod(models.Model):
         unique_together = ['day', 'time', 'section']
 
 
-# class Attendance(models.Model):
-#     VALUE_CHOICES = [
-#         (0, 'Not Marked'),
-#         (1, 'Present'),
-#         (2, 'Absent'),
-#         (3, 'Cancelled')
-#     ]
-#     timetable_period = models.ForeignKey(TimetablePeriod, on_delete=models.CASCADE)
-#     value = models.CharField(max_length=1, choices=VALUE_CHOICES, null=False)
-#     student = models.ForeignKey('users.Student', on_delete=models.CASCADE)
+class Attendance(models.Model):
+    VALUE_CHOICES = [
+        (0, 'Not Marked'),
+        (1, 'Present'),
+        (2, 'Absent'),
+        (3, 'Cancelled')
+    ]
+    timetable_period = models.ForeignKey(TimetablePeriod, on_delete=models.CASCADE)
+    value = models.CharField(max_length=1, choices=VALUE_CHOICES, null=False)
+    student = models.ForeignKey('users.Student', on_delete=models.CASCADE)
+    date = models.DateField(null=False)
