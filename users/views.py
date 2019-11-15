@@ -80,7 +80,12 @@ class SectionDetailView(generics.RetrieveAPIView):
 @permission_classes([IsAdminUser])
 def student_list_create_view(request):
     if request.method == "GET":
-        students = [student for student in Student.objects.all()]
+        if(request.query_params['section']):
+            section_id = request.query_params['section']
+            print(section_id)
+            students = [student for student in Student.objects.filter(section=section_id)]
+        else:
+            students = [student for student in Student.objects.all()]
 
         s = serializers.StudentReadSerializer(students, many=True)
         # print(s.is_valid())

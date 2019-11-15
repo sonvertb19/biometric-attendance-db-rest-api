@@ -37,10 +37,13 @@ class TimetablePeriodSerializer(serializers.ModelSerializer):
     # )
     class Meta:
         model = TimetablePeriod
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['section']
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['subject'] = SubjectSerializerId(instance.subject).data
         response['teacher'] = TeacherSerializer(instance.teacher).data['user']['first_name']
+        # print(instance.section)
+        response['section'] = SectionSerializer(instance.section).data['name']
         return response

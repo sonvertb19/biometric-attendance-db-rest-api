@@ -26,10 +26,17 @@ class TimetablePeriod(models.Model):
     time = models.TimeField(null=False)
     section = models.ForeignKey('users.Section', on_delete=models.CASCADE, null=False)
 
+
+    def save(self, *args, **kwargs):
+        # A seperate section field is required but
+        # can not rely on frontend developer to provide
+        # same section in the seperate section field as well as the subject field
+        self.section = self.subject.section
+        super().save(*args, **kwargs)
+
     class Meta:
         # unique_together = ['day', 'time']
         unique_together = ['day', 'time', 'section']
-
 
 class Attendance(models.Model):
     VALUE_CHOICES = [
