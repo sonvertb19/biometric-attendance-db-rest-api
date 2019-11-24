@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import include, path
 from users import views as user_views
 from attendance import views as attendance_views
+from teacher_api import urls as teacher_api_urls
+from student_api import urls as student_api_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +32,9 @@ urlpatterns = [
     path('timetable_periods/<int:pk>/', attendance_views.TimetablePeriodDetailDeleteUpdateView.as_view(),
          name="timetable_period-detail"),
 
+    path('attendance/', attendance_views.AttendanceListCreateView.as_view(), name="attendance-list-create"),
+    path('attendance/<int:pk>/', attendance_views.AttendanceDetailDeleteUpdateView.as_view(), name="attendance-detail"),
 
+    path("teacher_api/", include(teacher_api_urls)),
+    path("student_api/", include(student_api_urls)),
 ]

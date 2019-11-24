@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mark Attendance</title>
+</head>
+<body onload="init()">
+	<style type="text/css">
+		body{
+			background-color: black!important;
+			color: white!important;
+		}
+		select{
+
+			background-color: black!important;
+			color: white!important;	
+		}
+		a:hover{
+			cursor: pointer;
+		}
+		.navbar-custom{
+			background-color: #202020;
+		}
+		.jumbotron{
+			background-color: #e6dbc9!important;
+			color: black!important;
+		}
+	    body{
+	    	font-family: 'Nunito', sans-serif;
+	    }
+	    .btn-custom{
+	    	color: black!important;
+	    	background-color: #2f9dbf!important;
+	    }
+	</style>
+
+	<script
+	  src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	  crossorigin="anonymous"> 
+	</script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+	<script type="text/javascript">
+
+		function delete_cookie(){
+			document.cookie = "token=; domain=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
+			window.location.assign("{% url 'login' %}");
+		}
+
+		function get_sections(){
+			var x = document.cookie.split(";");
+
+			var token = x[1].split("=")[1];
+
+			var main_section_id = document.getElementById("mainSelect").value;
+			document.getElementById("pp").innerHTML = main_section_id;
+
+			$.ajax({
+			    url: "http://127.0.0.1:8001/teacher_api/sections/" + main_section_id + "/",
+			    method: "GET",
+			    beforeSend: function (xhr) {
+			        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+			    },
+			    success: function(data){
+    				var select_s = document.createElement("SELECT");
+					select_s.setAttribute("id","sectSelect");
+					document.body.append(select_s);
+
+					sections = data;
+					for (i in sections){
+						var option = document.createElement("option");
+						option.text = sections[i]["name"];
+						option.value = sections[i]["id"];
+						select_s.add(option);
+					}
+					var option = document.createElement("option");
+					option.text = "Select All";
+					option.value = 111;
+					select_s.add(option);
+
+			    },
+			    error: function(data) {
+			    	console.log(data);
+			    }
+			})
+		}
+
+		function init(){
+			if (document.cookie.indexOf('token') == -1 ) {
+			  	// Re-direct to this page
+				window.location.assign("{% url 'login' %}");
+			}
+
+			var x = document.cookie.split(";");
+
+			var token = x[1].split("=")[1];
+
+			// console.log(token);
+
+			$.ajax({
+			    url: "http://127.0.0.1:8001/teacher_api/main_sections/",
+			    method: "GET",
+			    beforeSend: function (xhr) {
+			        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+			    },
+			    success: function(data){
+			    	var select_ms = document.createElement("SELECT");
+					select_ms.setAttribute("id", "mainSelect");
+					select_ms.options.clear;
+					document.querySelector("#main_sections_select_div").appendChild(select_ms);
+					var main_sections = data;
+					for (i in main_sections){
+						var option = document.createElement("option");
+						option.text = main_sections[i]["name"];
+						option.value = main_sections[i]["id"];
+						select_ms.add(option);
+					}
+
+			    },
+			    error: function(data) {
+			    }
+			})
+		}
+
+
+		// 	//ROOM
+		// 	var rooms = [
+		// 		{
+		// 			"id": 1,
+		// 			"title": "L1"
+		// 		},
+		// 		{
+		// 			"id": 2,
+		// 			"title": "L2"
+		// 		},
+		// 		{
+		// 			"id": 3,
+		// 			"title": "L3"
+		// 		}
+		// 	];		
+		// 	var select_room = document.createElement("SELECT");
+		// 	select_room.setAttribute("id","roomSelect");
+		// 	document.body.append(select_room);
+
+		// 	for (i in rooms){
+		// 		var option = document.createElement("option");
+		// 		option.text = rooms[i]["title"];
+		// 		option.value = rooms[i]["id"];
+		// 		select_room.add(option);
+		// 	}
+			
+		// }
+
+		// function display_tt(){
+		// 	var sect_return = document.getElementById("sectSelect").value;
+		// 	document.getElementById("pp").innerHTML = sect_return;
+
+		// 	var select_t1 = document.createElement("SELECT");
+		// 	select_t1.setAttribute("id","t1Select");
+		// 	var select_t2 = document.createElement("SELECT");
+		// 	select_t2.setAttribute("id","t2Select");
+		// 	var select_t3 = document.createElement("SELECT");
+		// 	select_t3.setAttribute("id","t3Select");
+		// 	var select_t = document.createElement("SELECT");
+		// 	select_t.setAttribute("id","tSelect");
+			
+		// 	if(sect_return == 111){
+
+		// 		var x = document.getElementById("t1Select");
+		// 		var y = document.getElementById("t2Select");
+		// 		var z = document.getElementById("t3Select");
+		// 		if(x != null && y != null && z != null){
+		// 			x.remove();
+		// 			y.remove();
+		// 			z.remove();	
+		// 		}
+
+		// 		var s = document.getElementById("tSelect");
+		// 		if(s != null){
+		// 			s.remove();
+		// 		}
+				
+		// 		var tt1 = [
+		// 			{
+		// 				"id": 1,
+		// 				"subject_name": "ACA"
+		// 			},
+		// 			{
+		// 				"id": 2,
+		// 				"subject_name": "CN"
+		// 			}
+		// 		];
+		// 		var tt2 = [
+		// 			{
+		// 				"id": 1,
+		// 				"subject_name": "ACA"
+		// 			},
+		// 			{
+		// 				"id": 2,
+		// 				"subject_name": "MP"
+		// 			},
+		// 			{
+		// 				"id": 3,
+		// 				"subject_name": "ADC"
+		// 			}
+		// 		];
+		// 		var tt3 =[
+		// 			{
+		// 				"id": 1,
+		// 				"subject_name": "ACA"
+		// 			}
+		// 		];
+
+		// 		select_t1.options.length = 0;
+		// 		document.body.append(select_t1);
+
+		// 		for (i in tt1){
+		// 			var option = document.createElement("option");
+		// 			option.text = tt1[i]["subject_name"];
+		// 			option.value = tt1[i]["id"];
+		// 			select_t1.add(option);
+		// 		}			
+
+		// 		select_t2.options.length = 0;
+		// 		document.body.append(select_t2);
+
+		// 		for (i in tt2){
+		// 			var option = document.createElement("option");
+		// 			option.text = tt2[i]["subject_name"];
+		// 			option.value = tt2[i]["id"];
+		// 			select_t2.add(option);
+		// 		}
+
+		// 		select_t3.options.length = 0;
+		// 		document.body.append(select_t3);
+
+		// 		for (i in tt3){
+		// 			var option = document.createElement("option");
+		// 			option.text = tt3[i]["subject_name"];
+		// 			option.value = tt3[i]["id"];
+		// 			select_t3.add(option);
+		// 		}
+		// 	}
+
+		// 	else{
+		// 		var t = [
+		// 			{
+		// 				"id": 1,
+		// 				"subject_name": "ACA"
+		// 			},
+		// 			{
+		// 				"id": 2,
+		// 				"subject_name": "CN"
+		// 			}
+		// 		];
+
+		// 		var x = document.getElementById("t1Select");
+		// 		var y = document.getElementById("t2Select");
+		// 		var z = document.getElementById("t3Select");
+		// 		if(x != null && y != null && z != null){
+		// 			x.remove();
+		// 			y.remove();
+		// 			z.remove();	
+		// 		}
+
+		// 		var s = document.getElementById("tSelect");
+		// 		if(s != null){
+		// 			s.remove();
+		// 		}
+
+		// 		document.body.append(select_t);
+		// 		for (i in t){
+		// 			var option = document.createElement("option");
+		// 			option.text = t[i]["subject_name"];
+		// 			option.value = t[i]["id"];
+		// 			select_t.add(option);
+		// 		}
+		// 	}
+		// }
+	</script>
+
+	<nav class="navbar navbar-custom">
+		<div class="container">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#">Attendance Manager</a>
+		    </div>
+		    <ul class="nav navbar-nav navbar-right">
+				<li><a onclick="delete_cookie()">Logout</a></li>
+		    </ul>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<div id="main_sections_div">
+			<h4 style="display: inline;">Select Main Section: </h4>
+			<div style="display: inline;" id="main_sections_select_div"></div>
+			<span class="btn btn-custom btn-sm" onclick="get_sections()">Fetch Sections</span>
+		</div>
+
+		<p id="pp"></p>
+		
+		<button class="btn btn-custom" type="button" onclick="display_tt()">Get Time Table</button>
+
+	</div>
+</body>
+</html>

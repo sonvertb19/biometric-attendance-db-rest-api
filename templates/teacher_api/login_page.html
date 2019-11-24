@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>User Login</title>
+</head>
+<body style="padding: 0px; margin: 0px;">
+		<style type="text/css">
+		body{
+			font-family: "Noto Sans";
+		}
+		#error{
+			color: #ad0330;
+		}
+		.login_div{
+			max-width: 450px;
+		}
+		input{
+			outline: none;
+			border: none;
+			/*border-radius: 5px;*/
+			padding-left: 10px;
+			border-bottom: 2px solid #b7abab!important;
+			background-color: #e6dbc9!important;
+
+			width: 100%;
+			display: block;
+			height: 30px;
+			box-sizing: border-box;
+		}
+		input:focus{
+			border-bottom: 2px solid #772635!important;
+		    outline: none;
+		    border: none;
+		}
+		input:-webkit-autofill,
+		input:-webkit-autofill:hover,
+		input:-webkit-autofill:focus,
+		input:-webkit-autofill:active {
+		    transition: background-color 5000s ease-in-out 0s;
+		    outline: none;
+		    border: none;
+		}
+		button{
+			outline: none;
+			height: 20px;
+			padding: 0;
+			margin-top: 10px;
+		}
+		h6{
+			margin-bottom: 5px;
+			margin-top: 0px;
+		}
+		#error{
+			margin-bottom: 5px;
+			display: block;
+		}
+		.login_div{
+			/*background-color: #777b82!important;*/
+			/*background-color: #2e3830!important;*/
+			background-color: #e6dbc9!important;
+			color: black!important;
+			padding: 35px;
+			border-radius: 10px;
+		}
+	</style>
+
+	<style type="text/css">
+		body{
+			background-color: black!important;
+		}
+		.navbar-custom{
+			background-color: #202020;
+			color: white;
+		}
+		.jumbotron{
+			background-color: #e6dbc9!important;
+			color: black!important;
+		}
+	    body{
+	    	font-family: 'Nunito', sans-serif;
+	    }
+	</style>
+
+	<script
+	  src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	  crossorigin="anonymous"> 
+	</script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script>
+
+		function login(){
+			// var container = document.getElementsByClassName("login_page");
+			let username = document.getElementById("username").value;
+			let password = document.getElementById("password").value;
+
+
+			let client_id = "2cbvptpbHzSaRdGazubiygHdUpW2cD7mMISsBZoK";
+			let client_secret = "kLewmaoU0vrqMKTpvQrsWfqwhzJyM2kIoXoWvi6cB8x5h1skOMuj2ihIqy3DQsNvTTcnZoKjTfWibiRuhCP7ZwlkOrS01MZwvamQPzActymZQKnCL4hjHetLBONVNGeB";
+
+			let token_request = "grant_type=password&username=" + username + "&password=" + password;
+
+			var token = "";
+
+			$.ajax({
+			    url: "http://127.0.0.1:8001/o/token/",
+			    method: "POST",
+			    dataType: "json",
+			    data: token_request,
+			    contentType: "application/x-www-form-urlencoded",
+			    beforeSend: function (xhr) {
+			        xhr.setRequestHeader('Authorization', 'Basic ' + btoa(client_id + ":" + client_secret))
+			    },
+			    success: function(data){
+			    	token = data['access_token'];
+					d = new Date();
+					d.setDate(d.getDate()+10);
+					document.cookie = "token="+token+"; expires="+d.toGMTString() + ";path=/";
+					document.getElementById("error").innerHTML = "";
+					window.location.assign("{% url 'teachers-list' %}");
+			    },
+			    statusCode:{
+			    	// 400: Invalid userrname, password.
+			    	// 401: Invalid client.
+			    	400: function(response) {
+			    		console.log(response.responseJSON)
+						document.getElementById("error").innerHTML = response.responseJSON['error_description'];
+						document.getElementById("error").style.color = "red";
+					},
+					401: function(response){
+						document.getElementById("error").innerHTML = response.responseJSON['error'] + ". Update the website!";
+						document.getElementById("error").style.color = "red";
+					}
+			    }
+			})
+		}
+	</script>
+
+	<nav class="navbar navbar-custom">
+		<div class="container">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#">Attendance Manager: Teachers Portal</a>
+		    </div>
+		</div>
+	</nav>
+
+	<div class="login_div" style="margin:0 auto!important; width: 90vw!important; margin-top: 50px!important;">
+		<h3 style="margin-bottom: 10px;">Login</h3>
+
+		<small id="error"></small>
+
+	    <div>
+			<h6 style="color: #772635">Username</h6>
+			<input type="text" name="Username" id="username" required>
+		</div>
+
+		<div style="margin-top: 20px;">
+			<h6 style="color: #772635">Password</h6>
+			<input type="password" name="Password" id="password" required>
+		</div>
+		<div style="margin-top: 10px;">
+			<button onclick="login()" style="color: white; background-color: #772635; width: 100%; height: 35px;" class="btn btn-sm">Sign In</button>
+		</div>
+	</div>
+
+</body>
+</html>

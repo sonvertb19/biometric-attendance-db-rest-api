@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
+    'teacher_api',
+    'student_api',
 ]
 
 ADMIN_ENABLED = False

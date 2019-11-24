@@ -80,7 +80,7 @@ class SectionDetailView(generics.RetrieveAPIView):
 @permission_classes([IsAdminUser])
 def student_list_create_view(request):
     if request.method == "GET":
-        if(request.query_params['section']):
+        if('section' in request.query_params):
             section_id = request.query_params['section']
             print(section_id)
             students = [student for student in Student.objects.filter(section=section_id)]

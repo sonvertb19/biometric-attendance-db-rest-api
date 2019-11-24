@@ -4,7 +4,7 @@ from rest_framework import generics, permissions
 from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from attendance.models import Subject, TimetablePeriod
+from attendance.models import Subject, TimetablePeriod, Attendance
 
 
 @api_view(['GET', 'POST'])
@@ -66,3 +66,14 @@ class TimetablePeriodDetailDeleteUpdateView(generics.RetrieveUpdateDestroyAPIVie
     queryset = TimetablePeriod.objects.all()
     permission_classes = [IsAdminUser]
     serializer_class = serializers.TimetablePeriodSerializer
+
+class AttendanceListCreateView(generics.ListCreateAPIView):
+    queryset = Attendance.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = serializers.AttendanceSerializer
+
+
+class AttendanceDetailDeleteUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Attendance.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = serializers.AttendanceSerializer
