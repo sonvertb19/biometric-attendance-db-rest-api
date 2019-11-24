@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "cf2fb9f4-475a-49df-8371-1361ee22a7a5",
+		"name": "Teacher_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "verify_token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"token\":\"OnPDuUWnU5GeoTRZ1wSDsfPzuogCJP\"}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/teacher_api/verify_token/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"teacher_api",
+						"verify_token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "main_sections_list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "keBcAPewAvPCsp1fKDunWgfyJyyL92",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/teacher_api/main_sections/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"teacher_api",
+						"main_sections",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "a",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8002/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

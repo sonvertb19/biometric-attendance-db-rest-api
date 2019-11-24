@@ -1,12 +1,24 @@
 {
 	"info": {
-		"_postman_id": "52cc633c-d65f-4f32-b7ba-7d6ad8256778",
+		"_postman_id": "3bf70cd7-bd97-480e-8c4b-1bd714fead27",
 		"name": "BasDB_API Init",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Department Create",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "260087ff-397c-4afd-9959-6cf5ca51ae38",
+						"exec": [
+							"pm.globals.set(\"url\", \"http://127.0.0.1:8001/\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -26,7 +38,7 @@
 					"raw": "{\n\t\"name\": \"Computer Science\"\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/departments/",
+					"raw": "http://127.0.0.1:8001/departments/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -34,7 +46,57 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
+					"path": [
+						"departments",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Department Create- IT",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "260087ff-397c-4afd-9959-6cf5ca51ae38",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer PwiuDvGGGU5qbeQGEIh3aN21c393RK"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Information Technology\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/departments/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
 					"path": [
 						"departments",
 						""
@@ -59,7 +121,7 @@
 					"raw": "\r\n{\r\n  \"name\": \"CO123\",\r\n  \"department\": \"1\"\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/main_sections/",
+					"raw": "http://127.0.0.1:8001/main_sections/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -67,7 +129,40 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
+					"path": [
+						"main_sections",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create main_section IT-123",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"name\": \"IT123\",\r\n  \"department\": \"2\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/main_sections/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
 					"path": [
 						"main_sections",
 						""
@@ -92,7 +187,7 @@
 					"raw": "{\r\n  \"main_section\": \"CO123\",\r\n  \"name\": \"CO2\"\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/sections/",
+					"raw": "http://127.0.0.1:8001/sections/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -100,7 +195,7 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
 					"path": [
 						"sections",
 						""
@@ -125,7 +220,7 @@
 					"raw": "\r\n{\r\n  \"user\": {\r\n    \"username\": 11620005,\r\n    \"password\": \"JgB\",\r\n    \"first_name\": \"Sonvert\",\r\n    \"last_name\": \"Bhardwaj\"\r\n  },\r\n  \"section\": \"CO2\"\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/students/",
+					"raw": "http://127.0.0.1:8001/students/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -133,7 +228,40 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
+					"path": [
+						"students",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create student CO2 Number2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"user\": {\r\n    \"username\": 11620008,\r\n    \"password\": \"JgB\",\r\n    \"first_name\": \"Ankit\",\r\n    \"last_name\": \"Barman\"\r\n  },\r\n  \"section\": \"CO2\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/students/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
 					"path": [
 						"students",
 						""
@@ -155,10 +283,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"title\": \"OS-Lab\",\r\n  \"section\": \"CO2\"\r\n}"
+					"raw": "{\r\n  \"title\": \"DBMS\",\r\n  \"section\": \"CO2\"\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/subjects/",
+					"raw": "http://127.0.0.1:8001/subjects/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -166,7 +294,40 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
+					"path": [
+						"subjects",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Subject CO-2 Number 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"MP-Lab\",\r\n  \"section\": \"CO2\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/subjects/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
 					"path": [
 						"subjects",
 						""
@@ -188,10 +349,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"user\": {\r\n    \"username\": \"pushplata\",\r\n    \"password\": \"deepsun\",\r\n    \"first_name\": \"Pushp Lata\",\r\n    \"last_name\": \"Bhardwaj\"\r\n  }\r\n}"
+					"raw": "{\r\n  \"user\": {\r\n    \"username\": \"teacher\",\r\n    \"password\": \"test\",\r\n    \"first_name\": \"Teacher\"\r\n  }\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/teachers/",
+					"raw": "http://127.0.0.1:8001/teachers/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -199,7 +360,7 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
 					"path": [
 						"teachers",
 						""
@@ -221,10 +382,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"subject\": 1,\r\n  \"teacher\": 1,\r\n  \"day\": \"1\",\r\n  \"time\": \"08:30:00\"\r\n}\r\n"
+					"raw": "{\r\n  \"subject\": 1,\r\n  \"teacher\": 1,\r\n  \"day\": \"5\",\r\n  \"time\": \"08:33\"\r\n}\r\n"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/timetable_periods/",
+					"raw": "http://127.0.0.1:8001/timetable_periods/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -232,9 +393,141 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
 					"path": [
 						"timetable_periods",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create student CO1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"user\": {\r\n    \"username\": 1162004,\r\n    \"password\": \"JgB\",\r\n    \"first_name\": \"Yash\",\r\n    \"last_name\": \"Arora\"\r\n  },\r\n  \"section\": \"CO1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/students/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"students",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create section CO1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"main_section\": \"CO123\",\r\n  \"name\": \"CO1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/sections/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"sections",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Subject CO1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"CN\",\r\n  \"section\": \"CO1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/subjects/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"subjects",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Attendance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"value\": 1,\r\n\t\"date\": \"2019-11-19\",\r\n\t\"student\": 1,\r\n\t\"timetable_period\": 3\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/attendance/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"attendance",
 						""
 					]
 				}
@@ -246,8 +539,38 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "acer",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "acer",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "2cbvptpbHzSaRdGazubiygHdUpW2cD7mMISsBZoK",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "kLewmaoU0vrqMKTpvQrsWfqwhzJyM2kIoXoWvi6cB8x5h1skOMuj2ihIqy3DQsNvTTcnZoKjTfWibiRuhCP7ZwlkOrS01MZwvamQPzActymZQKnCL4hjHetLBONVNGeB",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/o/token/?grant_type=password&username=11620005&password=JgB&client_id=pKk0KNTMMuixN9hwL2Gc8lBV5NxTAz0ftvbIUMT7&client_secret=kocLnGSy4PBAIaVxyK35CMPBnBYUXy41a5T2KLbCmuCmj7PVqMhSYQcllKh86SIOxuOqNTw8AbSCqAwdbFluRBqQOy5eSG8ssRehfqO1hWFL2CQ8gh9MXP6iOzdI6P60",
+					"raw": "http://127.0.0.1:8001/o/token/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -255,33 +578,11 @@
 						"0",
 						"1"
 					],
-					"port": "8000",
+					"port": "8001",
 					"path": [
 						"o",
 						"token",
 						""
-					],
-					"query": [
-						{
-							"key": "grant_type",
-							"value": "password"
-						},
-						{
-							"key": "username",
-							"value": "11620005"
-						},
-						{
-							"key": "password",
-							"value": "JgB"
-						},
-						{
-							"key": "client_id",
-							"value": "pKk0KNTMMuixN9hwL2Gc8lBV5NxTAz0ftvbIUMT7"
-						},
-						{
-							"key": "client_secret",
-							"value": "kocLnGSy4PBAIaVxyK35CMPBnBYUXy41a5T2KLbCmuCmj7PVqMhSYQcllKh86SIOxuOqNTw8AbSCqAwdbFluRBqQOy5eSG8ssRehfqO1hWFL2CQ8gh9MXP6iOzdI6P60"
-						}
 					]
 				}
 			},
@@ -293,7 +594,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "ZnvpBdKx0UKAQZlcmruWfF5bWZ0Uhh",
+				"value": "O0Y4Iih1ip7RFEGfVMRu83i0mnefKn",
 				"type": "string"
 			}
 		]
