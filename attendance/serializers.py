@@ -54,6 +54,7 @@ class TimetablePeriodSerializer(serializers.ModelSerializer):
         response['section'] = SectionSerializer(instance.section).data['name']
         return response
 
+
 class TimetablePeriodSerializerForStudentAPI(serializers.ModelSerializer):
     class Meta:
         model = TimetablePeriod
@@ -133,6 +134,7 @@ class AttendanceSerializerForStudentAPI(serializers.ModelSerializer):
         timetable_period_object = TimetablePeriodSerializer(instance.timetable_period).data
         time = timetable_period_object['time']
         response['time'] = time
+        response['attended'] = int(instance.value)
 
 
 
