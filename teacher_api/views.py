@@ -107,7 +107,7 @@ def timetable_list(request):
 				    5: "Saturday",
 				    6: "Sunday",
 				}
-				# print(day_int_to_str[day])
+				print(day_int_to_str[day])
 
 				array_section_id_timetable_object_list = []
 				for section_id in section_list:
@@ -122,11 +122,13 @@ def timetable_list(request):
 						timetable_id = timetable.id
 						subject_title = timetable.subject.title
 						time = timetable.time
+						section = timetable.section.name
 
 						timetable_object = {
 							"id": int(timetable_id),
 							"title": subject_title,
-							"time": str(time)
+							"time": str(time),
+							"section": section
 						}
 						section_id_timetable_object_list[section_id].append(timetable_object)
 

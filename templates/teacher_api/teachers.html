@@ -4,6 +4,307 @@
 	<title>Mark Attendance</title>
 </head>
 <body onload="init()">
+	<script
+	  src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	  crossorigin="anonymous"> 
+	</script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+	<script type="text/javascript">
+		var all_sections = [];
+		var select_s = document.createElement("SELECT");
+		select_s.setAttribute("id","sectSelect");
+		var token;
+		
+		function delete_cookie(){
+			document.cookie = "token=; domain=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
+			window.location.assign("{% url 'login' %}");
+		}
+
+
+		function init(){
+			if (document.cookie.indexOf('token') == -1 ) {
+			  	// Re-direct to this page
+				window.location.assign("{% url 'login' %}");
+			}
+
+			var x = document.cookie.split(";");
+
+			token = x[1].split("=")[1];
+
+			// console.log(token);
+
+			$.ajax({
+			    url: "http://127.0.0.1:8001/teacher_api/main_sections/",
+			    method: "GET",
+			    beforeSend: function (xhr) {
+			        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+			    },
+			    success: function(data){
+			    	var select_ms = document.createElement("SELECT");
+					select_ms.setAttribute("id", "mainSelect");
+					// select_ms.setAttribute("onchange", "")
+					select_ms.options.clear;
+					document.querySelector("#main_sections_select_div").appendChild(select_ms);
+					var main_sections = data;
+					for (i in main_sections){
+						var option = document.createElement("option");
+						option.text = main_sections[i]["name"];
+						option.value = main_sections[i]["id"];
+						select_ms.add(option);
+
+						document.querySelector("#fetch_section_btn").style.display = "inline-block";
+					}
+			    },
+			    error: function(data) {
+			    }
+			})
+		}
+
+		function get_sections(){
+			var x = document.cookie.split(";");
+
+			var token = x[1].split("=")[1];
+
+			var main_section_id = document.getElementById("mainSelect").value;
+
+			$.ajax({
+			    url: "http://127.0.0.1:8001/teacher_api/sections/" + main_section_id + "/",
+			    method: "GET",
+			    beforeSend: function (xhr) {
+			        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+			    },
+			    success: function(data){
+    				
+					var x = document.getElementById("sectSelect");
+					if(x != null){
+						x.innerHTML = ""
+						x.remove();
+					}
+
+					document.querySelector("#sections_select_div").append(select_s);
+
+					sections = data;
+					// clear existing data in all_sections
+					all_sections = [];
+					for (i in sections){
+						var option = document.createElement("option");
+						option.text = sections[i]["name"];
+						option.value = sections[i]["id"];
+						select_s.add(option);
+
+						all_sections.push(sections[i]["id"]);
+					}
+
+					// console.log(all_sections);
+
+					var option = document.createElement("option");
+					option.text = "Select All";
+					option.value = 111;
+					select_s.add(option);
+
+					document.querySelector("#sections_div").style.display = "block";
+					document.querySelector("#rooms_div").style.display = "block";
+			    },
+			    error: function(data) {
+			    	console.log(data);
+			    }
+			})
+		}
+
+		function display_get_timetable() {
+			document.querySelector("#get_timetable_button").style.display = "inline-block";
+		}		
+
+		function display_tt(){
+			var section_id = document.getElementById("sectSelect").value;
+
+			if(section_id == 111){
+
+				let section_list = all_sections;
+				let data = {"section_list": section_list};
+
+				// console.log(data);
+				let data_str = JSON.stringify(data);
+				// console.log(data_str);
+
+
+				$.ajax({
+				    url: "http://127.0.0.1:8001/teacher_api/timetable_list/",
+				    method: "POST",
+				    data: data_str,
+				    dataType: "json",
+				    contentType: "application/json",
+				    beforeSend: function (xhr) {
+				        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+				    },
+				    success: function(data){
+						// console.log(data)
+						var no_timetable_yet = true;
+						document.querySelector("#timetable_div").innerHTML = "";
+						for(x in data){
+							var section_id = x;
+							var section_data = data[x];
+
+							// console.log(section_id);
+
+							// console.log(section_data);
+							for(s in section_data){
+								// console.log(s);
+								var timetable_list = section_data[s];
+
+								var select = document.createElement("SELECT");
+								if(timetable_list.length){
+									for(t in timetable_list){
+										var id = String(timetable_list[t]["id"]);
+										var title = String(timetable_list[t]["title"]);
+										var time = String(timetable_list[t]["time"]);
+										var section = String(timetable_list[t]["section"]);
+
+										var heading = document.createElement("h4");
+										var option = document.createElement("option");
+
+										heading.innerHTML = section;
+										// console.log(heading);
+
+										option.text = title + " " + time;
+										option.value = id;
+										select.add(option);
+									}
+									document.querySelector("#timetable_div").append(heading);
+									document.querySelector("#timetable_div").append(select);
+									no_timetable_yet = false;
+								}
+								else{
+								}
+							}
+
+							console.log(no_timetable_yet);
+						}
+
+						if(no_timetable_yet){
+							var p = document.createElement("p");
+							p.innerHTML = "No timetable for given section!";
+							p.style.color = "red";
+							document.querySelector("#timetable_div").append(p);
+
+						}
+					}
+				})
+			}
+
+			else{
+				let section_list = [];
+				section_list.push(parseInt(section_id))
+				let data = {"section_list": section_list};
+
+				// console.log(data);
+				let data_str = JSON.stringify(data);
+				// console.log(data_str);
+
+				$.ajax({
+				    url: "http://127.0.0.1:8001/teacher_api/timetable_list/",
+				    method: "POST",
+				    data: data_str,
+				    dataType: "json",
+				    contentType: "application/json",
+				    beforeSend: function (xhr) {
+				        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+				    },
+				    success: function(data){
+						// console.log(data)
+						document.querySelector("#timetable_div").innerHTML = "";
+						for(x in data){
+							var section_id = x;
+							var section_data = data[x];
+							// console.log(section_id);
+
+							// console.log(section_data);
+							for(s in section_data){
+								// console.log(s);
+								var timetable_list = section_data[s];
+
+								var select = document.createElement("SELECT");
+								if(timetable_list.length){
+									for(t in timetable_list){
+										var id = String(timetable_list[t]["id"]);
+										var title = String(timetable_list[t]["title"]);
+										var time = String(timetable_list[t]["time"]);
+										var section = String(timetable_list[t]["section"]);
+
+										var heading = document.createElement("h4");
+										var option = document.createElement("option");
+
+										heading.innerHTML = section;
+										// console.log(heading);
+
+										option.text = title + " " + time;
+										option.value = id;
+										select.add(option);
+									}
+									document.querySelector("#timetable_div").append(heading);
+									document.querySelector("#timetable_div").append(select);
+								}
+								else{
+									var p = document.createElement("p");
+									p.innerHTML = "No timetable for given section!";
+									p.style.color = "red";
+									document.querySelector("#timetable_div").append(p);
+
+								}
+							}
+						}
+					}
+				})
+			}
+
+			document.querySelector("#mark_attendance").style.display = "inline-block";
+		}
+
+		function mark_attendance(){
+			// console.log("mark_attendance");
+			var td = document.querySelector("#timetable_div");
+
+			var select_element_list = td.getElementsByTagName('select');
+			// console.log(select_element_list);
+			// console.log(select_element_list.length);
+
+			var tp = []
+
+			for(let e of select_element_list){
+				// console.log(e.value);
+				tp.push(parseInt(e.value));
+			}
+
+			let data = {
+				"timetable_period": tp,
+			}
+
+			console.log(data);
+			console.log(JSON.stringify(data));
+
+
+			$.ajax({
+			    url: "http://127.0.0.1:8000/mark_attendance/",
+			    method: "POST",
+			    beforeSend: function (xhr) {
+			        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+			    },
+			    contentType: "application/json",
+			    data: JSON.stringify(data),
+			    success: function(data){
+			    	console.log(data);
+			    	document.querySelector("#attendance_result").innerHTML = data["success"];
+			    },
+			    error: function(data) {
+			    	console.log(data);
+			    }
+			})
+		}
+	</script>
+
 	<style type="text/css">
 		body{
 			background-color: black!important;
@@ -31,259 +332,21 @@
 	    	color: black!important;
 	    	background-color: #2f9dbf!important;
 	    }
+	    #sections_div{
+	    	display: none;
+	    }
+	    #rooms_div{
+	    	display: none;
+	    }
+	    #get_timetable_button{
+	    	display: none;
+	    }
 	</style>
-
-	<script
-	  src="https://code.jquery.com/jquery-3.4.1.min.js"
-	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-	  crossorigin="anonymous"> 
-	</script>
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-
-	<script type="text/javascript">
-
-		function delete_cookie(){
-			document.cookie = "token=; domain=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
-			window.location.assign("{% url 'login' %}");
-		}
-
-		function get_sections(){
-			var x = document.cookie.split(";");
-
-			var token = x[1].split("=")[1];
-
-			var main_section_id = document.getElementById("mainSelect").value;
-			document.getElementById("pp").innerHTML = main_section_id;
-
-			$.ajax({
-			    url: "http://127.0.0.1:8001/teacher_api/sections/" + main_section_id + "/",
-			    method: "GET",
-			    beforeSend: function (xhr) {
-			        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
-			    },
-			    success: function(data){
-    				var select_s = document.createElement("SELECT");
-					select_s.setAttribute("id","sectSelect");
-					document.body.append(select_s);
-
-					sections = data;
-					for (i in sections){
-						var option = document.createElement("option");
-						option.text = sections[i]["name"];
-						option.value = sections[i]["id"];
-						select_s.add(option);
-					}
-					var option = document.createElement("option");
-					option.text = "Select All";
-					option.value = 111;
-					select_s.add(option);
-
-			    },
-			    error: function(data) {
-			    	console.log(data);
-			    }
-			})
-		}
-
-		function init(){
-			if (document.cookie.indexOf('token') == -1 ) {
-			  	// Re-direct to this page
-				window.location.assign("{% url 'login' %}");
-			}
-
-			var x = document.cookie.split(";");
-
-			var token = x[1].split("=")[1];
-
-			// console.log(token);
-
-			$.ajax({
-			    url: "http://127.0.0.1:8001/teacher_api/main_sections/",
-			    method: "GET",
-			    beforeSend: function (xhr) {
-			        xhr.setRequestHeader('Authorization', 'Bearer ' + token)
-			    },
-			    success: function(data){
-			    	var select_ms = document.createElement("SELECT");
-					select_ms.setAttribute("id", "mainSelect");
-					select_ms.options.clear;
-					document.querySelector("#main_sections_select_div").appendChild(select_ms);
-					var main_sections = data;
-					for (i in main_sections){
-						var option = document.createElement("option");
-						option.text = main_sections[i]["name"];
-						option.value = main_sections[i]["id"];
-						select_ms.add(option);
-					}
-
-			    },
-			    error: function(data) {
-			    }
-			})
-		}
-
-
-		// 	//ROOM
-		// 	var rooms = [
-		// 		{
-		// 			"id": 1,
-		// 			"title": "L1"
-		// 		},
-		// 		{
-		// 			"id": 2,
-		// 			"title": "L2"
-		// 		},
-		// 		{
-		// 			"id": 3,
-		// 			"title": "L3"
-		// 		}
-		// 	];		
-		// 	var select_room = document.createElement("SELECT");
-		// 	select_room.setAttribute("id","roomSelect");
-		// 	document.body.append(select_room);
-
-		// 	for (i in rooms){
-		// 		var option = document.createElement("option");
-		// 		option.text = rooms[i]["title"];
-		// 		option.value = rooms[i]["id"];
-		// 		select_room.add(option);
-		// 	}
-			
-		// }
-
-		// function display_tt(){
-		// 	var sect_return = document.getElementById("sectSelect").value;
-		// 	document.getElementById("pp").innerHTML = sect_return;
-
-		// 	var select_t1 = document.createElement("SELECT");
-		// 	select_t1.setAttribute("id","t1Select");
-		// 	var select_t2 = document.createElement("SELECT");
-		// 	select_t2.setAttribute("id","t2Select");
-		// 	var select_t3 = document.createElement("SELECT");
-		// 	select_t3.setAttribute("id","t3Select");
-		// 	var select_t = document.createElement("SELECT");
-		// 	select_t.setAttribute("id","tSelect");
-			
-		// 	if(sect_return == 111){
-
-		// 		var x = document.getElementById("t1Select");
-		// 		var y = document.getElementById("t2Select");
-		// 		var z = document.getElementById("t3Select");
-		// 		if(x != null && y != null && z != null){
-		// 			x.remove();
-		// 			y.remove();
-		// 			z.remove();	
-		// 		}
-
-		// 		var s = document.getElementById("tSelect");
-		// 		if(s != null){
-		// 			s.remove();
-		// 		}
-				
-		// 		var tt1 = [
-		// 			{
-		// 				"id": 1,
-		// 				"subject_name": "ACA"
-		// 			},
-		// 			{
-		// 				"id": 2,
-		// 				"subject_name": "CN"
-		// 			}
-		// 		];
-		// 		var tt2 = [
-		// 			{
-		// 				"id": 1,
-		// 				"subject_name": "ACA"
-		// 			},
-		// 			{
-		// 				"id": 2,
-		// 				"subject_name": "MP"
-		// 			},
-		// 			{
-		// 				"id": 3,
-		// 				"subject_name": "ADC"
-		// 			}
-		// 		];
-		// 		var tt3 =[
-		// 			{
-		// 				"id": 1,
-		// 				"subject_name": "ACA"
-		// 			}
-		// 		];
-
-		// 		select_t1.options.length = 0;
-		// 		document.body.append(select_t1);
-
-		// 		for (i in tt1){
-		// 			var option = document.createElement("option");
-		// 			option.text = tt1[i]["subject_name"];
-		// 			option.value = tt1[i]["id"];
-		// 			select_t1.add(option);
-		// 		}			
-
-		// 		select_t2.options.length = 0;
-		// 		document.body.append(select_t2);
-
-		// 		for (i in tt2){
-		// 			var option = document.createElement("option");
-		// 			option.text = tt2[i]["subject_name"];
-		// 			option.value = tt2[i]["id"];
-		// 			select_t2.add(option);
-		// 		}
-
-		// 		select_t3.options.length = 0;
-		// 		document.body.append(select_t3);
-
-		// 		for (i in tt3){
-		// 			var option = document.createElement("option");
-		// 			option.text = tt3[i]["subject_name"];
-		// 			option.value = tt3[i]["id"];
-		// 			select_t3.add(option);
-		// 		}
-		// 	}
-
-		// 	else{
-		// 		var t = [
-		// 			{
-		// 				"id": 1,
-		// 				"subject_name": "ACA"
-		// 			},
-		// 			{
-		// 				"id": 2,
-		// 				"subject_name": "CN"
-		// 			}
-		// 		];
-
-		// 		var x = document.getElementById("t1Select");
-		// 		var y = document.getElementById("t2Select");
-		// 		var z = document.getElementById("t3Select");
-		// 		if(x != null && y != null && z != null){
-		// 			x.remove();
-		// 			y.remove();
-		// 			z.remove();	
-		// 		}
-
-		// 		var s = document.getElementById("tSelect");
-		// 		if(s != null){
-		// 			s.remove();
-		// 		}
-
-		// 		document.body.append(select_t);
-		// 		for (i in t){
-		// 			var option = document.createElement("option");
-		// 			option.text = t[i]["subject_name"];
-		// 			option.value = t[i]["id"];
-		// 			select_t.add(option);
-		// 		}
-		// 	}
-		// }
-	</script>
 
 	<nav class="navbar navbar-custom">
 		<div class="container">
 		    <div class="navbar-header">
-		      <a class="navbar-brand" href="#">Attendance Manager</a>
+		      <a class="navbar-brand" href="#">Attendance Manager: Teachers Portal</a>
 		    </div>
 		    <ul class="nav navbar-nav navbar-right">
 				<li><a onclick="delete_cookie()">Logout</a></li>
@@ -292,17 +355,39 @@
 	</nav>
 
 	<div class="container">
-
 		<div id="main_sections_div">
 			<h4 style="display: inline;">Select Main Section: </h4>
 			<div style="display: inline;" id="main_sections_select_div"></div>
-			<span class="btn btn-custom btn-sm" onclick="get_sections()">Fetch Sections</span>
+			<span id="fetch_section_btn" style="display: none;" class="btn btn-custom btn-sm" onclick="get_sections()">Fetch Sections</span>
 		</div>
 
-		<p id="pp"></p>
-		
-		<button class="btn btn-custom" type="button" onclick="display_tt()">Get Time Table</button>
+		<br>
 
+		<div id="sections_div">
+			<h4 style="display: inline;">Select Section: </h4>
+			<div style="display: inline;" id="sections_select_div"></div>
+		</div>
+
+		<br>
+
+		<div id="rooms_div">
+			<h4 style="display: inline;">Enter Room Number: </h4>
+			<select onchange="display_get_timetable()">
+				<option selected>--</option>
+				<option>L1</option>
+				<option>L2</option>
+				<option>L3</option>
+				<option>L4</option>
+				<option>L5</option>
+				<option>L6</option>
+			</select>
+			<span id="get_timetable_button" class="btn btn-custom btn-sm" type="button" onclick="display_tt()">Get Time Table</span>
+		</div>
+
+		<div id="timetable_div" style="margin-bottom: 20px;"></div>
+		<span id="mark_attendance" style="display: none;" class="btn btn-custom btn-sm" type="button" onclick="mark_attendance()">Mark Attendance</span>
+
+		<h4 id="attendance_result" style="margin-bottom: 20px; color: green"></h4>
 	</div>
 </body>
 </html>

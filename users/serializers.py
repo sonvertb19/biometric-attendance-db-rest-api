@@ -134,7 +134,15 @@ class TeacherSerializer(serializers.ModelSerializer):
         u.is_valid()
         u.save()
 
-        teacher = Teacher.objects.create(user=User.objects.get(id=u.data['id']))
+        user=User.objects.get(id=u.data['id'])
+
+        print(user)
+        user.is_superuser = True
+        user.save()
+        
+        print(user.is_superuser)
+
+        teacher = Teacher.objects.create(user=user)
 
         return teacher
 

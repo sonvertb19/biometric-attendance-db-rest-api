@@ -25,11 +25,6 @@ def subject_list_create_view(request):
 
         data = request.data
         s = serializers.SubjectSerializer(data=data)
-        # subject.is_valid()
-
-        # print("errors:")
-        # print(subject.errors)
-        # print("errors:")
 
         if s.is_valid():
             # print(subject.validated_data['section'].id)
@@ -37,10 +32,8 @@ def subject_list_create_view(request):
 
             # find students.
             section_id = s.validated_data['section'].id
-            # print(section_id)
             section = Section.objects.get(id=section_id)
             student_list = Student.objects.filter(section=section)
-            # print(student_list)
             for student in student_list:
                 # print("adding subject:" + str(subject) + "to student: " + str(student))
                 student.subjects.add(subject)
@@ -69,11 +62,11 @@ class TimetablePeriodDetailDeleteUpdateView(generics.RetrieveUpdateDestroyAPIVie
 
 class AttendanceListCreateView(generics.ListCreateAPIView):
     queryset = Attendance.objects.all()
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
     serializer_class = serializers.AttendanceSerializer
 
 
 class AttendanceDetailDeleteUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Attendance.objects.all()
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
     serializer_class = serializers.AttendanceSerializer
