@@ -49,13 +49,14 @@ class DepartmentDetailDeleteUpdateView(generics.RetrieveUpdateDestroyAPIView):
 class MainSectionListCreateView(generics.ListCreateAPIView):
     queryset = MainSection.objects.all()
     permission_classes = [IsAdminUser]
+    serializer_class = serializers.MainSectionReadSerializer
 
-    def get_serializer_class(self):
-        # print(self.request.method)
-        if self.request.method in permissions.SAFE_METHODS:
-            return serializers.MainSectionReadSerializer
-        else:
-            return serializers.MainSectionWriteSerializer
+    # def get_serializer_class(self):
+    #     # print(self.request.method)
+    #     if self.request.method in permissions.SAFE_METHODS:
+    #         return serializers.MainSectionReadSerializer
+    #     else:
+    #         return serializers.MainSectionWriteSerializer
 
 
 class MainSectionDetailView(generics.RetrieveAPIView):
