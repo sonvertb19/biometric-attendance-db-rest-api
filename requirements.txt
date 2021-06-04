@@ -1,7 +1,7 @@
 beautifulsoup4==4.8.1
 certifi==2019.9.11
 chardet==3.0.4
-Django==2.2.7
+Django==2.2.21
 django-bootstrap4==1.0.1
 django-cors-headers==3.1.1
 django-oauth==1.1
